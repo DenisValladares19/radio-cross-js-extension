@@ -62,8 +62,36 @@ setTimeout(() => {
     for (i = 1; i < 10; i++) {
       window.bands[i - 1].connect(window.bands[i]);
     }
+    // crear splitter y merge para poder separar los dos canales L y R
+    // para derecha altos
+    const splitterRight = ctx.createChannelSplitter(2);
+    const mergeRight = ctx.createChannelMerger(2);
 
-    mediaElement.connect(window.bands[0]);
+    // para izquierda bajos
+    const splitterLeft = ctx.createChannelSplitter(2);
+    const mergeLeft = ctx.createChannelMerger(2);
+
+    // merge une los dos canales ya en mono
+    const merge = ctx.createChannelMerger(2);
+
+    // se conecta los dos separadores de canales al source
+    mediaElement.connect(splitterLeft);
+    mediaElement.connect(splitterRight);
+
+    // uniendo los dos canales L y R en uno solo que sera R
+    splitterRight.connect(mergeRight, 1, 1);
+    splitterRight.connect(mergeRight, 0, 1);
+
+    // uniendo los dos canales L y R en uno solo que sera L
+    splitterLeft.connect(mergeLeft, 1, 0);
+    splitterLeft.connect(mergeLeft, 0, 0);
+
+    // Uniendo los canales L y R antes modificados y
+    // dando un canal cada uno final
+    mergeLeft.connect(merge, 0, 0);
+    mergeRight.connect(merge, 0, 1);
+
+    merge.connect(window.bands[0]);
     // asignando los filtros a cada canal
     window.bands[9].connect(splitter);
 
