@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Radio cross js",
+  "description": "Ecualiza tu radio y distribuye tu audio como lo prefieras.",
+  "version": "1.0",
+  "author": "denisvalladares402@gmail.com",
+  "icons": {
+    "16": "img/icons/icon-16.png",
+    "32": "img/icons/icon-32.png",
+    "48": "img/icons/icon-48.png",
+    "128": "img/icons/icon-128.png"
+  },
+  "permissions": ["tabs"],
+  "content_scripts": [
+    {
+      "matches": ["https://radios.com.sv/*"],
+      "js": ["./index.js"],
+      "all_frames": true,
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["main.js"],
+      "matches": ["https://radios.com.sv/*"]
+    }
+  ]
+}
